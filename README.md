@@ -11,7 +11,7 @@ Soal meminta kita untuk membantu menganalisis data penumpang KANJ (Kereta Argo N
   c. Menemukan siapa penumpang tertua di KANJ hari itu  
   d. Rata-rata usia penumpang KANJ hari itu  
   e. Banyaknya penumpang business class KANJ hari itu
-  (+) Pesan untuk contoh penulisan command
+  (+) Pesan contoh penulisan command untuk error case.
 
 #### Menginisiasi kode dengan BEGIN
 ```
@@ -137,6 +137,9 @@ END {
 
 <img src="assets/soal_1/output_e_pesan.png" width="450">
 
+### Kendala
+Tidak ada kendala.
+
 ### Soal 2
 ### Penjelasan
 
@@ -215,10 +218,13 @@ cat posisipusaka.txt
 : `lati1` artinya untuk `NR = 1` (baris pertama), ambil `$3` yaitu `latitude`.  
 : `long1` artinya untuk `NR = 1` (baris pertama), ambil `$4` yaitu `longitude`.  
 : `lati2` artinya untuk `NR = 3` (baris ketiga), ambil `$3` yaitu `latitude`.  
-: `long2` artinya untuk `NR = 3` (baris ketiga), ambil `$4` yaitu `longitude`  
+: `long2` artinya untuk `NR = 3` (baris ketiga), ambil `$4` yaitu `longitude`. 
 : Selanjutnya menghitung titik tengahnya dengan rumus titik tengah persegi. Ada penggunaan `bc -l` karena bash script tidak bisa *float*.  
 : Hasil mid point latitude & mid point longitude akan dimasukkan ke `posisipusaka.txt`.
 
 ### Output
 
 <img src="assets/soal_2/output_posisipusaka.png" width="500">
+
+### Kendala 
+Kendala yang saya dapatkan di soal ini adalah bagian awal untuk mendapatkan banyak ekstensi yang dibutuhkan untuk menyelesaikan masalah soal, juga bagian shellscripting yang masih agak sulit dimengerti karena sebuah lingkungan scripting yang baru.
