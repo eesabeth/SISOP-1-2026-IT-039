@@ -125,3 +125,62 @@ END {
 : Bagian `END` dijalankan setelah seluruh isi file sudah dibaca, dijadikan tempat memberikan output.  
 
 ### Output
+#### 1. a dan b
+
+<img src="assets/soal_1/output_a_b.png" width="450">
+
+#### 2. c dan d
+
+<img src="assets/soal_1/output_c_d.png" width="450">
+
+#### 3. e dan pesan
+
+<img src="assets/soal_1/output_e_pesan.png" width="450">
+
+### Soal 2
+### Penjelasan
+
+Soal ini meminta kita untuk membantu ekspedisi Mas Amba dalam menelusuri titik-titik penting di peta gunung kawi. Yang perlu dicari adalah:
+
+a. Titik penting  
+b. Posisi pusaka
+
+#### 1. Menemukan git peta-gunung-kawi
+
+Untuk mendapatkan git peta-gunung-kawi, kita perlu mendownload `peta-ekspedisi-amba.pdf` terlebih dahulu menggunakan `gdown`. Setelah itu mencari link github petanya, untuk diclone.
+
+*gambar*
+
+Di dalam folder `peta-gunung-kawi` akan ada file `gsxtrack.json` yang dipakai untuk menentukan `titik-penting.txt` dan `nemupusaka.txt`.
+
+#### a. Titik penting
+
+Titik penting ini dapat ditemukan dari mencarinya di `parserkoordinat`. Jadi, langkah yang perlu dilakukan adalah...
+
+```
+nano parserkoordinat.sh
+```
+```
+#!/bin/bash
+
+grep -E '"site_name"|"latitude"|"longitude"' gsxtrack.json \
+| sed 's/[",]//g' \
+| awk '
+/site_name/ {name = $2}
+/latitude/ {lati = $2}
+/longitude/ {long = $2
+              printf "node_%02d, %s, %s, %s\n", ++i, name,
+              lati, long}' > titik-penting.txt
+```
+
+: Script ini dijalankan dengan `bash`  
+: Memakai `grep` untuk hanya mencari baris yang mengandung `"site_name"`, `"latitude"`, `"longitude"` dari file `gsxtrack.json`.  
+: Memakai extended regex `-E` untuk menggunakan operator `|` (OR).  
+: Memakai `sed` untuk membersihkan/menghapus karakter `"` dan `,` di hasil grep nanti.  
+: Memakai `awk` untuk mengolah datanya,  
+  * `/site_name/ {name = $2}` artinya saat bertemu `site_name`, ambil `$2` nya dan simpan ke variabel `name`.
+  * `/latitude/ {lati = $2}` artinya saat bertemu `latitude`, ambil `$2` nya dan simpan ke variabel `lati`.
+  * `/longitude/ {long = $2  printf "node_%02d, %s, %s, %s\n", ++i, name,
+              lati, long}' > titik-penting.txt`, artinya saat bertemu `longitude`, ambil `$2` nya dan simpan ke variabel `long`. Selanjutnya untuk `output`, akan diprint `"node_2 digit, string nama, string lati, string long"` dilakukan otomatis melalui `++i`, dan hasilnya akan dimasukkan ke file `titik-penting.txt`.
+
+### Output
