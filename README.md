@@ -149,13 +149,13 @@ b. Posisi pusaka
 
 Untuk mendapatkan git peta-gunung-kawi, kita perlu mendownload `peta-ekspedisi-amba.pdf` terlebih dahulu menggunakan `gdown`. Setelah itu mencari link github petanya, untuk diclone.
 
-*gambar*
+<img src="assets/soal_2/clone_git.png" width="500">
 
-Di dalam folder `peta-gunung-kawi` akan ada file `gsxtrack.json` yang dipakai untuk menentukan `titik-penting.txt` dan `nemupusaka.txt`.
+Setelah ter-clone, di dalam folder `peta-gunung-kawi` akan ada file `gsxtrack.json` yang dipakai untuk menentukan `titik-penting.txt`.
 
-#### a. Titik penting
+#### a. Parser Koordinat & Titik Penting
 
-Titik penting ini dapat ditemukan dari mencarinya di `parserkoordinat`. Jadi, langkah yang perlu dilakukan adalah...
+Titik penting ini dapat ditemukan dari mencarinya di `Parser Koordinat`. Jadi, langkah yang perlu dilakukan adalah...
 
 ```
 nano parserkoordinat.sh
@@ -184,3 +184,41 @@ grep -E '"site_name"|"latitude"|"longitude"' gsxtrack.json \
               lati, long}' > titik-penting.txt`, artinya saat bertemu `longitude`, ambil `$2` nya dan simpan ke variabel `long`. Selanjutnya untuk `output`, akan diprint `"node_2 digit, string nama, string lati, string long"` dilakukan otomatis melalui `++i`, dan hasilnya akan dimasukkan ke file `titik-penting.txt`.
 
 ### Output
+<img src="assets/soal_2/output_titikpenting.png" width="500">
+
+#### b. Nemu Pusaka & Posisi Pusaka
+
+Selanjutnya untuk menemukan titik tengah `Posisi Pusaka`, kita perlu menjalankan script `Nemu Pusaka` yang datanya akan diambil dari file `titik-penting.txt`. Langkah yang perlu dilakukan adalah...
+
+```
+nano nemupusaka.sh
+```
+```
+#!/bin/bash
+
+lati1=$(awk -F',' 'NR == 1 {print $3}' titik-penting.txt)
+long1=$(awk -F',' 'NR == 1 {print $4}' titik-penting.txt)
+
+lati2=$(awk -F',' 'NR == 3 {print $3}' titik-penting.txt)
+long2=$(awk -F',' 'NR == 3 {print $4}' titik-penting.txt)
+
+mid_lati=$(echo "$lati1 + $lati2)/2" | bc -l)
+mid_long=$(echo "$long1 + $long2)/2" | bc -l)
+
+echo "$mid_lati, $mid_long" > posisipusaka.txt
+
+echo "Koordinat pusaka:"
+cat posisipusaka.txt
+```
+
+: `-F` sebagai field separator yang memisahkan data tiap `,` (koma).  
+: `lati1` artinya untuk `NR = 1` (baris pertama), ambil `$3` yaitu `latitude`.  
+: `long1` artinya untuk `NR = 1` (baris pertama), ambil `$4` yaitu `longitude`.  
+: `lati2` artinya untuk `NR = 3` (baris ketiga), ambil `$3` yaitu `latitude`.  
+: `long2` artinya untuk `NR = 3` (baris ketiga), ambil `$4` yaitu `longitude`  
+: Selanjutnya menghitung titik tengahnya dengan rumus titik tengah persegi. Ada penggunaan `bc -l` karena bash script tidak bisa *float*.  
+: Hasil mid point latitude & mid point longitude akan dimasukkan ke `posisipusaka.txt`.
+
+### Output
+
+<img src="assets/soal_2/output_posisipusaka.png" width="500">
