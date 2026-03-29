@@ -175,7 +175,7 @@ grep -E '"site_name"|"latitude"|"longitude"' gsxtrack.json \
         }
 /latitude/ {lati = $2}
 /longitude/ {long = $2
-                printf "node_%02d, %s, %s, %s\n", ++i, name,
+                printf "node_%03d, %s, %s, %s\n", ++i, name,
                 lati, long}' > titik-penting.txt
 ```
 
@@ -189,11 +189,11 @@ grep -E '"site_name"|"latitude"|"longitude"' gsxtrack.json \
         name = $0
         }` artinya saat bertemu `site_name`, ganti teks `site_name` menjadi `""` (kosong). Lalu menyimpan satu baris ($0) ke variabel `name`.
   * `/latitude/ {lati = $2}` artinya saat bertemu `latitude`, ambil `$2` nya dan simpan ke variabel `lati`.
-  * `/longitude/ {long = $2  printf "node_%02d, %s, %s, %s\n", ++i, name,
-              lati, long}' > titik-penting.txt`, artinya saat bertemu `longitude`, ambil `$2` nya dan simpan ke variabel `long`. Selanjutnya untuk `output`, akan diprint `"node_2 digit, string nama, string lati, string long"` dilakukan otomatis melalui `++i`, dan hasilnya akan dimasukkan ke file `titik-penting.txt`.
+  * `/longitude/ {long = $2  printf "node_%03d, %s, %s, %s\n", ++i, name,
+              lati, long}' > titik-penting.txt`, artinya saat bertemu `longitude`, ambil `$2` nya dan simpan ke variabel `long`. Selanjutnya untuk `output`, akan diprint `"node_3 digit, string nama, string lati, string long"` dilakukan otomatis melalui `++i`, dan hasilnya akan dimasukkan ke file `titik-penting.txt`.
 
 ### Output
-<img src="assets/soal_2/output_titikfix.png" width="500">
+<img src="assets/soal_2/revisi_output_titik.png" width="500">
 
 #### b. Nemu Pusaka & Posisi Pusaka
 
