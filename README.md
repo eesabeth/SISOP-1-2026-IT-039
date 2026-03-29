@@ -169,11 +169,14 @@ nano parserkoordinat.sh
 grep -E '"site_name"|"latitude"|"longitude"' gsxtrack.json \
 | sed 's/[",]//g' \
 | awk '
-/site_name/ {name = $2}
+/site_name/ {
+        sub(/site_name: /, "")
+        name = $0
+        }
 /latitude/ {lati = $2}
 /longitude/ {long = $2
-              printf "node_%02d, %s, %s, %s\n", ++i, name,
-              lati, long}' > titik-penting.txt
+                printf "node_%02d, %s, %s, %s\n", ++i, name,
+                lati, long}' > titik-penting.txt
 ```
 
 : Script ini dijalankan dengan `bash`  
@@ -181,13 +184,16 @@ grep -E '"site_name"|"latitude"|"longitude"' gsxtrack.json \
 : Memakai extended regex `-E` untuk menggunakan operator `|` (OR).  
 : Memakai `sed` untuk membersihkan/menghapus karakter `"` dan `,` di hasil grep nanti.  
 : Memakai `awk` untuk mengolah datanya,  
-  * `/site_name/ {name = $2}` artinya saat bertemu `site_name`, ambil `$2` nya dan simpan ke variabel `name`.
+  * `/site_name/ {
+        sub(/site_name: /, "")
+        name = $0
+        }` artinya saat bertemu `site_name`, ganti teks `site_name` menjadi `""` (kosong). Lalu menyimpan satu baris ($0) ke variabel `name`.
   * `/latitude/ {lati = $2}` artinya saat bertemu `latitude`, ambil `$2` nya dan simpan ke variabel `lati`.
   * `/longitude/ {long = $2  printf "node_%02d, %s, %s, %s\n", ++i, name,
               lati, long}' > titik-penting.txt`, artinya saat bertemu `longitude`, ambil `$2` nya dan simpan ke variabel `long`. Selanjutnya untuk `output`, akan diprint `"node_2 digit, string nama, string lati, string long"` dilakukan otomatis melalui `++i`, dan hasilnya akan dimasukkan ke file `titik-penting.txt`.
 
 ### Output
-<img src="assets/soal_2/output_titikpenting.png" width="500">
+<img src="assets/soal_2/output_titikfix.png" width="500">
 
 #### b. Nemu Pusaka & Posisi Pusaka
 
